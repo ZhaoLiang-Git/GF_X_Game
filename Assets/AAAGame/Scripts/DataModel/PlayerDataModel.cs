@@ -9,29 +9,29 @@ using UnityGameFramework.Runtime;
 public enum PlayerDataType
 {
     /// <summary>
-    ///ç©å®¶é‡‘å¸
+    /// Íæ¼Ò½ğ±Ò
     /// </summary>
     Coins,
     /// <summary>
-    /// ç©å®¶é’»çŸ³
+    /// Íæ¼Ò×êÊ¯
     /// </summary>
     Diamond,
     /// <summary>
-    /// ç©å®¶è¡€é‡
+    /// Íæ¼ÒÑªÁ¿
     /// </summary>
     Hp,
     /// <summary>
-    /// ç©å®¶èƒ½é‡
+    /// Íæ¼ÒÄÜÁ¿
     /// </summary>
     Energy,
     /// <summary>
-    /// ç©å®¶Id
+    /// ¹Ø¿¨Id
     /// </summary>
     LevelId
 }
 
 /// <summary>
-/// ç©å®¶æ•°æ®ç±»ï¼Œé‡‘å¸é’»çŸ³ç­‰æ•°æ®
+/// Íæ¼ÒÊı¾İÀà, ½ğ±Ò/ÑªÁ¿µÈ
 /// </summary>
 public class PlayerDataModel : DataModelStorageBase
 {
@@ -48,7 +48,7 @@ public class PlayerDataModel : DataModelStorageBase
         set => SetData(PlayerDataType.Coins, Mathf.Max(0, value));
     }
     /// <summary>
-    /// å…³å¡Id 
+    /// ¹Ø¿¨
     /// </summary>
     public int LevelId
     {
@@ -87,7 +87,6 @@ public class PlayerDataModel : DataModelStorageBase
     }
     protected override void OnInitialDataModel()
     {
-        //åˆå§‹åŒ–æ•°æ®æ–¹æ³•ï¼Œåœ¨æ²¡æœ‰æœ¬åœ°ç¼“å­˜æ•°æ®çš„æ—¶å€™ï¼Œåœ¨è¿™é‡Œåˆå§‹åŒ–æ•°æ®
         m_PlayerDataDic[PlayerDataType.Coins] = GF.Config.GetInt("DefaultCoins");
         m_PlayerDataDic[PlayerDataType.Diamond] = GF.Config.GetInt("DefaultDiamonds");
         m_PlayerDataDic[PlayerDataType.Hp] = 100;
@@ -102,7 +101,6 @@ public class PlayerDataModel : DataModelStorageBase
     }
     public void SetData(PlayerDataType tp, int value, bool triggerEvent = true)
     {
-        //æ•°æ®æ”¹å˜å‘é€äº‹ä»¶ï¼Œåˆ·æ–°UI
         int oldValue = m_PlayerDataDic[tp];
         m_PlayerDataDic[tp] = value;
 
