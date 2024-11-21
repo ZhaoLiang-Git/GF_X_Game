@@ -18,7 +18,7 @@ public partial class UITopbar : UIFormBase
         varBg.enabled = Params.Get<VarBoolean>(P_EnableBG, true);
         varBtnMenu.gameObject.SetActive(Params.Get<VarBoolean>(P_EnableSettingBtn, true));
 
-
+        //每次打开都刷新一次
         var playerDm = GF.DataModel.GetOrCreate<PlayerDataModel>();
         varTxtCoin.text = playerDm.Coins.ToString();
         varTxtEnergy.text = playerDm.GetData(PlayerDataType.Energy).ToString();

@@ -67,7 +67,7 @@ public class MenuProcedure : ProcedureBase
         //动态创建关卡
         var lvTb = GF.DataTable.GetDataTable<LevelTable>();
         var playerMd = GF.DataModel.GetOrCreate<PlayerDataModel>();
-        var lvRow = lvTb.GetDataRow(playerMd.LevelId);
+        var lvRow = lvTb.GetDataRow(6);//var lvRow = lvTb.GetDataRow(playerMd.LevelId);//TODO：注释后边需要解开
 
         var lvParams = EntityParams.Create(Vector3.zero, Vector3.zero, Vector3.one);
         lvParams.Set(LevelEntity.P_LevelData, lvRow);

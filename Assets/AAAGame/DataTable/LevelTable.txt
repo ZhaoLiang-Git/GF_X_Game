@@ -7,3 +7,4 @@
 	3		Lv_1	315	6	Level.DisplayName3
 	4		Lv_1	210	6	Level.DisplayName4
 	5		Lv_1	315	3	Level.DisplayName5
+	6		Lv_2	325	3	Level.DisplayName6
