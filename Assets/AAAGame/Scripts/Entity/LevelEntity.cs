@@ -15,7 +15,7 @@ public class LevelEntity : EntityBase
     private Transform playerSpawnPoint;
     PlayerEntity m_PlayerEntity;
     
-    PlayerCarEntity m_PlayerCarEntity;
+    static PlayerCarEntity m_PlayerCarEntity;
     public Most_Spawn SpawnManager;
     
     List<Spawnner> m_Spawnners;
@@ -24,7 +24,7 @@ public class LevelEntity : EntityBase
     Dictionary<int, CombatUnitEntity> m_Enemies;
     bool m_IsGameOver;
     //-----TODO：新增加
-    CombatUnitTable m_CombatUnitRow;     
+    static CombatUnitTable m_CombatUnitRow;     
     protected override void OnInit(object userData)
     {
         base.OnInit(userData);
@@ -36,13 +36,14 @@ public class LevelEntity : EntityBase
         //-----TODO：新增加
         var combatUnitTb = GF.DataTable.GetDataTable<CombatUnitTable>();
         m_CombatUnitRow = combatUnitTb.GetDataRow(5);
+        SpawnManager.OnSpawnNewInstantiatedEvent.AddListener(SpawnEnemiesUpdateNew);
     }
 
     protected override async void OnShow(object userData)
     {
         base.OnShow(userData);
         GF.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
-        GF.Event.Subscribe(HideEntityCompleteEventArgs.EventId, OnHideEntityComplete);
+        GF.Event.Subscribe(HideEntityCompleteEventArgs.EventId, OnHideEntityComplete); 
         m_PlayerEntity = null;
         m_PlayerCarEntity = null;
         m_IsGameOver = false;
@@ -50,19 +51,21 @@ public class LevelEntity : EntityBase
         m_Spawnners.Clear();
         m_EntityLoadingList.Clear();
         m_Enemies.Clear();
-        //CachedTransform.Find("EnemySpawnPoints").GetComponentsInChildren<Spawnner>(m_Spawnners);
 
+        // CachedTransform.Find("EnemySpawnPoints").GetComponentsInChildren<Spawnner>(m_Spawnners);
         // var combatUnitTb = GF.DataTable.GetDataTable<CombatUnitTable>();
         // var playerRow = combatUnitTb.GetDataRow(0);
         // var playerParams = EntityParams.Create(playerSpawnPoint.position, playerSpawnPoint.eulerAngles);
         // playerParams.Set(PlayerEntity.P_DataTableRow, playerRow);
         // playerParams.Set<VarInt32>(PlayerEntity.P_CombatFlag, (int)CombatUnitEntity.CombatFlag.Player);
         // playerParams.Set<VarAction>(PlayerEntity.P_OnBeKilled, (Action)OnPlayerBeKilled);
-        //关卡创建成功之后显示玩家预制体
-        //m_PlayerEntity = await GF.Entity.ShowEntityAwait<PlayerEntity>(playerRow.PrefabName, Const.EntityGroup.Player, playerParams) as PlayerEntity;//同步创建玩家实体立即返回一个实体
-        // var playerid = GF.Entity.ShowEntity<PlayerEntity>(playerRow.PrefabName, Const.EntityGroup.Player, playerParams);//异步创建玩家实体会返回一个ID
-        // GF.Entity.HideEntity(playerid);//如果是在未加载完成的时候调用会取消任务，如果加载完成会隐藏
-        //CameraController.Instance.SetFollowTarget(m_PlayerEntity.CachedTransform); //设置相机的跟随目标
+        // // 关卡创建成功之后显示玩家预制体
+        // m_PlayerEntity =
+        //     await GF.Entity.ShowEntityAwait<PlayerEntity>(playerRow.PrefabName, Const.EntityGroup.Player, playerParams)
+        //         as PlayerEntity; //同步创建玩家实体立即返回一个实体
+        // // var playerid = GF.Entity.ShowEntity<PlayerEntity>(playerRow.PrefabName, Const.EntityGroup.Player, playerParams);//异步创建玩家实体会返回一个ID
+        // //GF.Entity.HideEntity(playerid);//如果是在未加载完成的时候调用会取消任务，如果加载完成会隐藏
+        // CameraController.Instance.SetFollowTarget(m_PlayerEntity.CachedTransform); //设置相机的跟随目标
         
         var combatUnitTb = GF.DataTable.GetDataTable<CombatUnitTable>();
         var playerRow = combatUnitTb.GetDataRow(4);
@@ -122,7 +125,39 @@ public class LevelEntity : EntityBase
             }
         }
     }
+    #region 新添加测试逻辑
 
+    public void SpawnEnemiesUpdateNew(GameObject obj)
+    {
+        if (obj == null)
+        {
+            return;
+        }
+
+        AIEnemyCarEntity entity = obj.GetComponent<AIEnemyCarEntity>();
+        entity.SetTarget(m_PlayerCarEntity);
+        
+        //  var playerPos = m_PlayerCarEntity.CachedTransform.position;
+        //  var entityEulerAngles = m_PlayerCarEntity.CachedTransform.eulerAngles;
+        //
+        //  // var ids = item.SpawnAllCombatUnits(m_PlayerCarEntity);
+        //  var eParams = EntityParams.Create(position, entityEulerAngles);
+        //  eParams.Set(AIEnemyCarEntity.P_DataTableRow, m_CombatUnitRow);
+        //  eParams.Set<VarInt32>(AIEnemyCarEntity.P_CombatFlag, (int)CombatUnitEntity.CombatFlag.Enemy);
+        //  //if (m_UnitFlag == CombatUnitEntity.CombatFlag.Enemy)
+        //  {
+        //      eParams.Set<VarTransform>(AIEnemyCarEntity.P_Target, m_PlayerCarEntity.CachedTransform);
+        //  }
+        //  int entityId =
+        //      GF.Entity.ShowEntity<AIEnemyCarEntity>(m_CombatUnitRow.PrefabName, Const.EntityGroup.Player, eParams);
+        // var data = GF.Entity.GetEntity(entityId);
+
+        // foreach (var entityId in ids)
+        // {
+        //     m_EntityLoadingList.Add(entityId);
+        // }
+    }
+    #endregion
     private void OnPlayerBeKilled()
     {
         if (m_IsGameOver) return;

@@ -139,6 +139,9 @@ namespace Solo.MOST_IN_ONE
 
         [Tooltip("These Events will be called at each new spawn (new object Instantiated) and send the spawn point")]
         public UnityEvent<Vector3> OnSpawnCalledEvent = new();// Events when a New Object Spawned // Called for each Spawn Event
+        
+        [Tooltip("每次生成新的对象是调用")]
+        public UnityEvent<GameObject> OnSpawnNewInstantiatedEvent = new();
                                                               // ____________ End Spawn Position Section ____________
         int _cycleCounter, _falseTryCounter, _spawnCounter, _selector;
         bool _activate;
@@ -215,6 +218,7 @@ namespace Solo.MOST_IN_ONE
 
                     TotalSpawnedObjects++;
                     CurrentActiveObjects = ActiveObjectsInScene.Count;
+                    OnSpawnNewInstantiatedEvent.Invoke(ActiveObjectsInScene[^1]);
                 }
                 OnSpawnCalledEvent.Invoke(position); // call OnSpawnCalled Event
             } // Spawn loop finished // Current cycle finished

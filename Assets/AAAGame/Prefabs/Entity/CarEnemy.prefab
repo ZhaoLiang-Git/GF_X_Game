@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: -3288730721116518263}
   - component: {fileID: -1170068769577057695}
   - component: {fileID: -5462013540284687747}
-  - component: {fileID: 4620529212001049242}
+  - component: {fileID: 2063387220695635901}
   m_Layer: 0
   m_Name: CarEnemy
   m_TagString: Enemy
@@ -541,7 +541,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1557146254790039434}
@@ -615,7 +615,7 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!114 &4620529212001049242
+--- !u!114 &2063387220695635901
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -627,6 +627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5203a7b44fc4113a2bfdce0a2d45801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_CombatUnitId: 1
 --- !u!1 &3484312568039486911
 GameObject:
   m_ObjectHideFlags: 0
