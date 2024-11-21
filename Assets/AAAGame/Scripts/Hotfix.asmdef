@@ -13,7 +13,8 @@
         "DOTween.Extension",
         "Unity.Jobs",
         "Unity.Collections",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "ZString"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
