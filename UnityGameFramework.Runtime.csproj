@@ -209,8 +209,8 @@
     <Compile Include="Assets\Plugins\UnityGameFramework\Scripts\Runtime\Resource\BuiltinVersionListSerializer.UpdatableVersionListSerializeCallback.cs" />
     <Compile Include="Assets\Plugins\UnityGameFramework\Scripts\Runtime\Setting\PlayerPrefsSettingHelper.cs" />
     <Compile Include="Assets\Plugins\UnityGameFramework\Scripts\Runtime\Debugger\DebuggerComponent.ConsoleWindow.cs" />
-    <Compile Include="Assets\Plugins\UnityGameFramework\Scripts\Runtime\Localization\LoadDictionaryDependencyAssetEventArgs.cs" />
     <Compile Include="Assets\Plugins\UnityGameFramework\Scripts\Runtime\Debugger\DebuggerComponent.RuntimeMemorySummaryWindow.cs" />
+    <Compile Include="Assets\Plugins\UnityGameFramework\Scripts\Runtime\Localization\LoadDictionaryDependencyAssetEventArgs.cs" />
     <Compile Include="Assets\Plugins\UnityGameFramework\Scripts\Runtime\Setting\DefaultSettingHelper.cs" />
     <Compile Include="Assets\Plugins\UnityGameFramework\Scripts\Runtime\ReferencePool\ReferencePoolComponent.cs" />
     <Compile Include="Assets\Plugins\UnityGameFramework\Scripts\Runtime\Scene\UnloadSceneSuccessEventArgs.cs" />

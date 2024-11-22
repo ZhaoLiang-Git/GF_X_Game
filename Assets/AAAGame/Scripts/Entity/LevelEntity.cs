@@ -24,7 +24,8 @@ public class LevelEntity : EntityBase
     Dictionary<int, CombatUnitEntity> m_Enemies;
     bool m_IsGameOver;
     //-----TODO：新增加
-    static CombatUnitTable m_CombatUnitRow;     
+    static CombatUnitTable m_CombatUnitRow;  
+    List<AIEnemyCarEntity> m_AIEnemyCarEntityList;
     protected override void OnInit(object userData)
     {
         base.OnInit(userData);
@@ -34,6 +35,7 @@ public class LevelEntity : EntityBase
         m_EntityLoadingList = new HashSet<int>();
         m_Enemies = new Dictionary<int, CombatUnitEntity>();
         //-----TODO：新增加
+        m_AIEnemyCarEntityList = new List<AIEnemyCarEntity>();
         var combatUnitTb = GF.DataTable.GetDataTable<CombatUnitTable>();
         m_CombatUnitRow = combatUnitTb.GetDataRow(5);
         SpawnManager.OnSpawnNewInstantiatedEvent.AddListener(SpawnEnemiesUpdateNew);
@@ -67,6 +69,7 @@ public class LevelEntity : EntityBase
         // //GF.Entity.HideEntity(playerid);//如果是在未加载完成的时候调用会取消任务，如果加载完成会隐藏
         // CameraController.Instance.SetFollowTarget(m_PlayerEntity.CachedTransform); //设置相机的跟随目标
         
+        m_AIEnemyCarEntityList.Clear();
         var combatUnitTb = GF.DataTable.GetDataTable<CombatUnitTable>();
         var playerRow = combatUnitTb.GetDataRow(4);
         var playerParams = EntityParams.Create(playerSpawnPoint.position, playerSpawnPoint.eulerAngles);
@@ -137,6 +140,7 @@ public class LevelEntity : EntityBase
         AIEnemyCarEntity entity = obj.GetComponent<AIEnemyCarEntity>();
         entity.SetTarget(m_PlayerCarEntity);
         
+        
         //  var playerPos = m_PlayerCarEntity.CachedTransform.position;
         //  var entityEulerAngles = m_PlayerCarEntity.CachedTransform.eulerAngles;
         //
@@ -151,8 +155,13 @@ public class LevelEntity : EntityBase
         //  int entityId =
         //      GF.Entity.ShowEntity<AIEnemyCarEntity>(m_CombatUnitRow.PrefabName, Const.EntityGroup.Player, eParams);
         // var data = GF.Entity.GetEntity(entityId);
-
-        // foreach (var entityId in ids)
+        
+        // m_AIEnemyCarEntityList.Add(entity);
+        // for (int i = m_AIEnemyCarEntityList.Count - 1; i >= 0; i--)
+        // {
+        //    
+        // }
+        // foreach (var entityId in i)
         // {
         //     m_EntityLoadingList.Add(entityId);
         // }

@@ -462,7 +462,7 @@ MonoBehaviour:
   TargetRotation: 0
   RandomRange_Minimum: 0
   RandomRange_Maximum: 0
-  LimitActiveObjectsInScene: 0
+  LimitActiveObjectsInScene: 1
   MaxNumberInScene: 100
   CurrentActiveObjects: 0
   TotalSpawnedObjects: 0
@@ -473,6 +473,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnSpawnCalledEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSpawnNewInstantiatedEvent:
     m_PersistentCalls:
       m_Calls: []
   EnableDebug: 1

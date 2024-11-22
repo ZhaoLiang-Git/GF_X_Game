@@ -6,12 +6,31 @@
   <component name="ChangeListManager">
     <list default="true" id="7d322eeb-9804-4f5b-a7d3-7daff47b359d" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GF_X-Game/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GF_X-Game/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AAAGameData/DataTables/Core/UIGroupTable.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/AAAGameData/DataTables/Core/UIGroupTable.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AAAGameData/DataTables/Core/UITable.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/AAAGameData/DataTables/Core/UITable.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/DataTable/Core/UIGroupTable.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/DataTable/Core/UIGroupTable.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/DataTable/Core/UITable.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/DataTable/Core/UITable.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Font/Common/AlibabaPuHuiTi-3-85-Bold SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Font/Common/AlibabaPuHuiTi-3-85-Bold SDF.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/Entity/CarEnemy.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/Entity/CarEnemy.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/Entity/Lv_2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/Entity/Lv_2.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/DataTable/Core/UIGroupTable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/DataTable/Core/UIGroupTable.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/DataTable/Core/UITable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/DataTable/Core/UITable.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Demo/AIEnemyCarEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Demo/AIEnemyCarEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Demo/CombatUnitEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Demo/CombatUnitEntity.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Entity/LevelEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Entity/LevelEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Procedures/MenuProcedure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Procedures/MenuProcedure.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Entity/PlayerCarEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Entity/PlayerCarEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/UI/Core/UIFormBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/UI/Core/UIFormBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/UI/Core/UIViews.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/UI/Core/UIViews.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/ScriptsBuiltin/Editor/UI/UIFormBaseInspector.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/ScriptsBuiltin/Editor/UI/UIFormBaseInspector.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/ScriptsBuiltin/Runtime/GFHelper/CustomUIGroupHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/ScriptsBuiltin/Runtime/GFHelper/CustomUIGroupHelper.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Ash Assets/Arcade Vehicle Physics/Materials/Friction.physicMaterial" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Ash Assets/Arcade Vehicle Physics/Materials/Friction.physicMaterial" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/UnityGameFramework/Configs/ResourceRuleEditor.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/UnityGameFramework/Configs/ResourceRuleEditor.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GF_X-Game.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/GF_X-Game.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnityGameFramework.Runtime.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/UnityGameFramework.Runtime.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,9 +55,10 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6ff3bcb667574bf9a8630184172fcfbf176600/91/4d27a56b/LayerMask.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6ff3bcb667574bf9a8630184172fcfbf176600/f6/6eb647aa/Material.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/863800b36fd24ebc9a9b0a985ae0ee1a95ca00/77/e82495a9/Editor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/cc2f9c8962ab4786828dbc883e8fcfa01fe00/0e/d820802a/CharacterController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/cc2f9c8962ab4786828dbc883e8fcfa01fe00/8f/b8d08b50/OverlapSphereCommand.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://E:/Unity3Dproject/MOST IN ONE Test/Assets/Most In One/Dodge/Scripts/BullControl.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://G:/A-Unity3DProject/GF_X-Game/Assets/AAAGame/Scripts/Entity/LevelEntity.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.timeline@1.7.6/Runtime/Utilities/HashUtility.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -49,21 +69,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;demo&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.IDE.editor.colors.配色方案字体&quot;,
-    &quot;settings.editor.splitter.proportion&quot;: &quot;0.26476577&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
-    &quot;附加到 Unity 编辑器.附加到 Unity 编辑器.executor&quot;: &quot;Debug&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "正在合并 demo",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.配色方案字体",
+    "settings.editor.splitter.proportion": "0.26476577",
+    "vue.rearranger.settings.migration": "true",
+    "附加到 Unity 编辑器.附加到 Unity 编辑器.executor": "Debug"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="附加到 Unity 编辑器.附加到 Unity 编辑器">
     <configuration name="启动 Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="F:\Unity3D\Unity 2022.3.51f1\Editor\Unity.exe" />
@@ -81,10 +101,10 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="附加到 Unity 编辑器" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="45864">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="45864" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -125,6 +145,8 @@
       <workItem from="1732158647664" duration="11869000" />
       <workItem from="1732173541718" duration="9634000" />
       <workItem from="1732185058666" duration="35000" />
+      <workItem from="1732185097449" duration="19706000" />
+      <workItem from="1732263969988" duration="10568000" />
     </task>
     <servers />
   </component>
@@ -140,6 +162,25 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/AAAGame/Scripts/Entity/LevelEntity.cs</url>
+          <line>215</line>
+          <properties documentPath="G:\A-Unity3DProject\GF_X-Game\Assets\AAAGame\Scripts\Entity\LevelEntity.cs" containingFunctionPresentation="方法 'OnHideEntityComplete'">
+            <startOffsets>
+              <option value="8494" />
+            </startOffsets>
+            <endOffsets>
+              <option value="8510" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

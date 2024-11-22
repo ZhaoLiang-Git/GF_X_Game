@@ -627,6 +627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5203a7b44fc4113a2bfdce0a2d45801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DestroyPt: {fileID: 5469354135369976643, guid: 8d28249d906ec4e9f8d4bd6e6e8eb5e4, type: 3}
   m_CombatUnitId: 1
 --- !u!1 &3484312568039486911
 GameObject:

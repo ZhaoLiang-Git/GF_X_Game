@@ -43,6 +43,7 @@ public class CombatUnitEntity : EntityBase
         gameObject.layer = LayerMask.NameToLayer(CampFlag == CombatFlag.Player ? "Player" : "Enemy");
         CombatUnitRow = Params.Get(P_DataTableRow) as CombatUnitTable;
         Hp = CombatUnitRow.Hp;
+        GF.LogInfo("血量为："+Hp);
         m_SearchTargetsCommand = new OverlapSphereCommand(CachedTransform.position, CombatUnitRow.AttackRadius, CampFlag == CombatFlag.Player ? JobsPhysics.QueryParametersForPlayer : JobsPhysics.QueryParametersForEnemy);
     }
 
