@@ -448,12 +448,12 @@ MonoBehaviour:
   Hight: 0
   EnableSnap: 0
   GridSize: {x: 1, y: 0, z: 1}
-  RepeatSystem: 0
-  AmountSystem: 0
-  SpawnRatePerCycle: 4
-  CycleTime: 3
+  RepeatSystem: 1
+  AmountSystem: 1
+  SpawnRatePerCycle: 100
+  CycleTime: 2
   RestTimeBetweenCycles: 0
-  NumberOfCycles: -1
+  NumberOfCycles: 1
   FirstCycleDelay: 0
   EnableRateAccelerator: 0
   TargetSpawnRate: 0

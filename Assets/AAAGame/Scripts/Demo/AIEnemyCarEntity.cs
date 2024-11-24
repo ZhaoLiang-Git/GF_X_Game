@@ -22,7 +22,7 @@ public class AIEnemyCarEntity : MonoBehaviour
     protected CombatFlag CampFlag { get; private set; }
     public CombatUnitTable CombatUnitRow { get; private set; }
     public virtual int Hp { get; protected set; }
-    public virtual int ID { get; protected set; }
+    public virtual int ID { get; set; }
     public virtual Vector3 HitPoint { get=>transform.position + Vector3.up; }
     void Awake()
     {
@@ -104,5 +104,7 @@ public class AIEnemyCarEntity : MonoBehaviour
             GF.LogInfo("增加金币");
             GF.DataModel.GetDataModel<PlayerDataModel>().Coins++;
         }
+        //敌人死后发送事件通知LevelEntity根据敌人ID从m_AIEnemyCarEntityList列表里移除
+        GF.Event.Fire(this, NotificationDeletionEnemyEventArgs.Create(GFNotificationDeletionEnemy.killEnemy,ID));
     }
 }

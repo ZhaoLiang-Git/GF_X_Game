@@ -15,8 +15,10 @@ namespace AAAGame.Scripts.Entity
         const string EnemyTag = "Enemy";
         private PlayerDataModel m_PlayerData;
         private ArcadeVehicleController m_ArcadeVehicleController;
+        SpriteRenderer m_SkilCircle;
+        float m_SkillDiameter;
         private bool mCtrlable;
-        
+        Vector3[] m_SkillQueryPoints;
         Action m_OnPlayerBeKilled = null;
         
         float m_DamageTimer;
@@ -46,6 +48,8 @@ namespace AAAGame.Scripts.Entity
             base.OnInit(userData);
             m_ArcadeVehicleController = GetComponent<ArcadeVehicleController>();
             m_PlayerData = GF.DataModel.GetOrCreate<PlayerDataModel>();
+            m_SkilCircle = CachedTransform.Find("Circle").GetComponent<SpriteRenderer>();
+            m_SkillQueryPoints = new Vector3[1];
         }
 
         protected override void OnShow(object userData)
@@ -53,6 +57,8 @@ namespace AAAGame.Scripts.Entity
             base.OnShow(userData);
             m_PlayerData.SetData(PlayerDataType.Hp, CombatUnitRow.Hp);
             m_OnPlayerBeKilled = Params.Get<VarAction>(P_OnBeKilled);
+            m_SkilCircle.size = Vector2.one * m_SkillDiameter;
+            m_SkillDiameter = 10;
             GF.StaticUI.Joystick.OnPointerUpCallback += OnJoystickUp;
         }
 
@@ -71,7 +77,26 @@ namespace AAAGame.Scripts.Entity
         
         private void OnJoystickUp()
         {
-            
+            SkillAttack();
+        }
+        
+        public override bool Attack(CombatUnitEntity unit)
+        {
+            bool bekilled = base.Attack(unit);
+            if (bekilled)
+            {
+                AddSkillCircleDiameter(unit.CombatUnitRow.Id);
+            }
+            return bekilled;
+        }
+        private void AddSkillCircleDiameter(int v)
+        {
+            SetSkillCircleDiameter(m_SkillDiameter += v * 0.25f);
+        }
+        private void SetSkillCircleDiameter(float v)
+        {
+            m_SkillDiameter = v;
+            m_SkilCircle.size = Vector2.one * m_SkillDiameter;
         }
         
         private void OnCollisionEnter(Collision collision)
@@ -86,6 +111,51 @@ namespace AAAGame.Scripts.Entity
             var enemey = collision.gameObject.GetComponent<AIEnemyCarEntity>();
             enemey.Attack(this);
             m_DamageTimer = 0;
+        }
+        
+        private async void SkillAttack()
+        {
+            float queryRadius = m_SkillDiameter * 0.5f;
+            SetSkillCircleDiameter(1);
+            m_SkillQueryPoints[0] = CachedTransform.position;
+            var hitsList = JobsPhysics.OverlapSphereNearest(this.CampFlag, m_SkillQueryPoints, queryRadius);
+
+            int entityId = 0;
+            List<int> entityIds = new List<int>();
+            CombatUnitEntity entity = null;
+            for (int i = 0; i < hitsList.Length; i++)
+            {
+                entityId = hitsList[i];
+                if (entityId == 0) break;
+                entityIds.Add(entityId);
+            }
+            hitsList.Dispose();
+            float damageInterval = 0.5f;
+            float lastDamageRadius = damageInterval;
+            bool hasEnemy = false;
+            for (int i = 0; i < entityIds.Count; i++)
+            {
+                entityId = entityIds[i];
+                if (!GF.Entity.HasEntity(entityId)) continue;
+                entity = GF.Entity.GetEntity<CombatUnitEntity>(entityId);
+
+                float distance = Vector3.Distance(CachedTransform.position, entity.CachedTransform.position);
+                if (distance < lastDamageRadius)
+                {
+                    Attack(entity, 100);
+                    hasEnemy = true;
+                }
+                else
+                {
+                    lastDamageRadius += damageInterval;
+                    if (hasEnemy)
+                    {
+                        await UniTask.DelayFrame(1);
+                        hasEnemy = false;
+                    }
+                    i--;
+                }
+            }
         }
         
         /// <summary>
