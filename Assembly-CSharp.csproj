@@ -86,7 +86,6 @@
     <None Include="Assets\AAAGame\Font\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\AAAGame\Font\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\AAAGame\Font\TextMesh Pro\Sprites\EmojiOne.json" />
-    <None Include="Assets\AAAGame\Config\GameConfig#A.txt" />
     <None Include="Assets\AAAGame\Font\TextMesh Pro\Shaders\TMP_Sprite.shader" />
     <Reference Include="UnityEngine">
       <HintPath>F:\Unity3D\Unity 2022.3.51f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
