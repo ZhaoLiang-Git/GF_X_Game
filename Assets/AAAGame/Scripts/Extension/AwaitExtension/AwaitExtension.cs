@@ -95,7 +95,7 @@ public static class AwaitExtension
     /// <summary>
     /// 加载数据表（可等待）
     /// </summary>
-    public static async UniTask<IDataTable<T>> LoadDataTableAwait<T>(this DataTableComponent dataTableComponent, string dataTableName, object userData = null) where T : IDataRow
+    public static async UniTask<IDataTable<T>> LoadDataTableAwait<T>(this DataTableComponent dataTableComponent, string dataTableName, bool useBytes, object userData = null) where T : IDataRow
     {
 #if UNITY_EDITOR
         TipsSubscribeEvent();
@@ -107,8 +107,8 @@ public static class AwaitExtension
         }
 
         var loadTcs = new UniTaskCompletionSource<bool>();
-        dataTableComponent.LoadDataTable(dataTableName, userData);
-        var dataTableAssetName = UtilityBuiltin.AssetsPath.GetDataTablePath(dataTableName);
+        dataTableComponent.LoadDataTable(dataTableName, useBytes, userData);
+        var dataTableAssetName = UtilityBuiltin.AssetsPath.GetDataTablePath(dataTableName, useBytes);
         mDataTableTask.Add(dataTableAssetName, loadTcs);
         bool isLoaded = await loadTcs.Task;
         dataTable = isLoaded ? dataTableComponent.GetDataTable<T>() : null;
@@ -180,15 +180,15 @@ public static class AwaitExtension
     /// <summary>
     /// 显示实体（可等待）
     /// </summary>
-    public static UniTask<EntityLogic> ShowEntityAwait(this EntityComponent entityComponent, int entityId,
-        Type entityLogicType, string entityAssetName, string entityGroupName, int priority, object userData)
+    public static UniTask<EntityLogic> ShowEntityAwait(this EntityComponent entityComponent, string pfbName,
+        string logicName, Const.EntityGroup eGroup, EntityParams parms)
     {
 #if UNITY_EDITOR
         TipsSubscribeEvent();
 #endif
         var tcs = new UniTaskCompletionSource<EntityLogic>();
-        mEntityTask.Add(entityId, tcs);
-        entityComponent.ShowEntity(entityId, entityLogicType, entityAssetName, entityGroupName, priority, userData);
+        mEntityTask.Add(parms.Id, tcs);
+        entityComponent.ShowEntity(pfbName, logicName, eGroup, parms);
         return tcs.Task;
     }
 
