@@ -25,7 +25,7 @@ public class LevelEntity : EntityBase
     bool m_IsGameOver;
     //-----TODO：新增加
     static CombatUnitTable m_CombatUnitRow;  
-    Dictionary<int, AIEnemyCarEntity> m_AIEnemyCarEntityList;
+    Dictionary<int, AIEnemyCarEntity> m_AIEnemyCarEntityDic;
     protected override void OnInit(object userData)
     {
         base.OnInit(userData);
@@ -35,15 +35,15 @@ public class LevelEntity : EntityBase
         m_EntityLoadingList = new HashSet<int>();
         m_Enemies = new Dictionary<int, CombatUnitEntity>();
         //-----TODO：新增加
-        m_AIEnemyCarEntityList = new Dictionary<int,AIEnemyCarEntity>();
+        m_AIEnemyCarEntityDic = new Dictionary<int,AIEnemyCarEntity>();
         var combatUnitTb = GF.DataTable.GetDataTable<CombatUnitTable>();
         m_CombatUnitRow = combatUnitTb.GetDataRow(5);
-        SpawnManager.OnSpawnNewInstantiatedEvent.AddListener(SpawnEnemiesUpdateNew);
     }
 
     protected override async void OnShow(object userData)
     {
         base.OnShow(userData);
+        SpawnManager.OnSpawnNewInstantiatedEvent.AddListener(SpawnEnemiesUpdateNew);
         GF.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
         GF.Event.Subscribe(HideEntityCompleteEventArgs.EventId, OnHideEntityComplete); 
         GF.Event.Subscribe(NotificationDeletionEnemyEventArgs.EventId, OnRemoveEnemy);
@@ -71,7 +71,7 @@ public class LevelEntity : EntityBase
         // //GF.Entity.HideEntity(playerid);//如果是在未加载完成的时候调用会取消任务，如果加载完成会隐藏
         // CameraController.Instance.SetFollowTarget(m_PlayerEntity.CachedTransform); //设置相机的跟随目标
         
-        m_AIEnemyCarEntityList.Clear();
+        m_AIEnemyCarEntityDic.Clear();
         var combatUnitTb = GF.DataTable.GetDataTable<CombatUnitTable>();
         var playerRow = combatUnitTb.GetDataRow(4);
         var playerParams = EntityParams.Create(playerSpawnPoint.position, playerSpawnPoint.eulerAngles);
@@ -93,16 +93,15 @@ public class LevelEntity : EntityBase
         if (m_IsGameOver || !IsAllReady) return;
         //TODO：注释后边需要解开
         //SpawnEnemiesUpdate();
-        //检测游戏是否结束
-        CheckGameOverNew();
     }
 
     protected override void OnHide(bool isShutdown, object userData)
     {
+        SpawnManager.OnSpawnNewInstantiatedEvent.RemoveListener(SpawnEnemiesUpdateNew);
         GF.Event.Unsubscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
         GF.Event.Unsubscribe(HideEntityCompleteEventArgs.EventId, OnHideEntityComplete);
         GF.Event.Unsubscribe(NotificationDeletionEnemyEventArgs.EventId, OnRemoveEnemy);
-
+        
         base.OnHide(isShutdown, userData);
     }
 
@@ -114,7 +113,7 @@ public class LevelEntity : EntityBase
         if (SpawnManager != null)
         {
             SpawnManager.EnableState(true);
-            SpawnManager.SpawnRatePerCycle = 1; 
+            SpawnManager.SpawnRatePerCycle = 100; 
         }
     }
 
@@ -142,7 +141,7 @@ public class LevelEntity : EntityBase
     private bool CheckEnemyCount()
     {
         if (SpawnManager == null) return false;
-        return m_AIEnemyCarEntityList.Count >= SpawnManager.MaxNumberInScene;
+        return m_AIEnemyCarEntityDic.Count >= SpawnManager.MaxNumberInScene;
     }
     
     public void SpawnEnemiesUpdateNew(GameObject obj)
@@ -157,8 +156,7 @@ public class LevelEntity : EntityBase
         //给添加到列表里的对象生成一个HASH值
         entity.ID = entity.GetHashCode();
         //将敌人对象加入列表
-        m_AIEnemyCarEntityList.Add(entity.ID,entity);
-        GF.LogInfo("entity.ID "+entity.ID );
+        m_AIEnemyCarEntityDic.Add(entity.ID,entity);
         //  var playerPos = m_PlayerCarEntity.CachedTransform.position;
         //  var entityEulerAngles = m_PlayerCarEntity.CachedTransform.eulerAngles;
         //
@@ -232,6 +230,7 @@ public class LevelEntity : EntityBase
         }
         //暂时注释
         //CheckGameOver();
+        CheckGameOverNew();
     }
 
     private void OnRemoveEnemy(object sender, GameEventArgs e)
@@ -239,17 +238,19 @@ public class LevelEntity : EntityBase
          var eArgs = e as NotificationDeletionEnemyEventArgs;
          if (eArgs.EventType == GFNotificationDeletionEnemy.killEnemy)
          {
-             m_AIEnemyCarEntityList.Remove(eArgs.EnemyID);
+             m_AIEnemyCarEntityDic.Remove(eArgs.EnemyID);
          }
     }
     
-    //TODO:通过Update实时检测敌人对象列表里的数量是不是小于等于0是的话则游戏结束
+    //通过隐藏实体回调检测敌人对象列表里的数量是不是小于等于0是的话则游戏结束
     private void CheckGameOverNew()
     {
         if (m_IsGameOver) return;
-        if (m_AIEnemyCarEntityList.Count < 1)
+        if (m_AIEnemyCarEntityDic.Count < 1)
         {
+            GF.LogInfo("输出敌人数量："+m_AIEnemyCarEntityDic.Count);
             m_IsGameOver = true;
+            GF.LogInfo("调用了设置游戏结束");
             var eParms = RefParams.Create();
             eParms.Set<VarBoolean>("IsWin", true);
             GF.Event.Fire(GameplayEventArgs.EventId, GameplayEventArgs.Create(GameplayEventType.GameOver, eParms));

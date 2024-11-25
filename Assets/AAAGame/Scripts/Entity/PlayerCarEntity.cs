@@ -59,6 +59,7 @@ namespace AAAGame.Scripts.Entity
             m_OnPlayerBeKilled = Params.Get<VarAction>(P_OnBeKilled);
             m_SkilCircle.size = Vector2.one * m_SkillDiameter;
             m_SkillDiameter = 10;
+            m_ArcadeVehicleController.MaxSpeed = 70;
             GF.StaticUI.Joystick.OnPointerUpCallback += OnJoystickUp;
         }
 

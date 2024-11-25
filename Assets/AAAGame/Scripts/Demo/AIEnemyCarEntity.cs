@@ -47,7 +47,8 @@ public class AIEnemyCarEntity : MonoBehaviour
             offsetPos.y = 0;
             var moveDir = Vector3.Normalize(offsetPos);
             var targetVelocity = CombatUnitRow.MoveSpeed * moveDir;
-            m_Rigidbody.velocity = Vector3.Lerp(m_Rigidbody.velocity, targetVelocity, 1 / math.distancesq(targetVelocity, m_Rigidbody.velocity));
+            transform.position += CombatUnitRow.MoveSpeed * Time.deltaTime * transform.TransformDirection(Vector3.forward);
+            //m_Rigidbody.velocity = Vector3.Lerp(m_Rigidbody.velocity, targetVelocity, 1 / math.distancesq(targetVelocity, m_Rigidbody.velocity));
         }
     }
     public  bool ApplyDamage2(CombatUnitEntity attacker, int damgeValue)
@@ -96,15 +97,31 @@ public class AIEnemyCarEntity : MonoBehaviour
     protected virtual void OnBeKilled()
     {
         //GF.Entity.HideEntity(this.Entity);
-        Destroy(Instantiate(DestroyPt, transform.position + Vector3.up, Quaternion.identity), 5);
-        Destroy(gameObject);
-
         if(CampFlag == CombatFlag.Enemy)
         {
-            GF.LogInfo("增加金币");
             GF.DataModel.GetDataModel<PlayerDataModel>().Coins++;
         }
         //敌人死后发送事件通知LevelEntity根据敌人ID从m_AIEnemyCarEntityList列表里移除
         GF.Event.Fire(this, NotificationDeletionEnemyEventArgs.Create(GFNotificationDeletionEnemy.killEnemy,ID));
+        //通过框架方法添加特效和删除特效
+        //Destroy(Instantiate(DestroyPt, transform.position + Vector3.up, Quaternion.identity), 5);
+        ShootFx(transform.position, transform.position + Vector3.up);
+        Destroy(gameObject);
+    }
+    
+    private void ShootFx(Vector3 position, Vector3 hitPoint)
+    {
+        var fxParams = EntityParams.Create(position, Quaternion.LookRotation(Vector3.Normalize(hitPoint - position)).eulerAngles);
+        float duration = 5;
+        fxParams.OnShowCallback = SetShootParticleDuration;
+        GF.Entity.ShowEffect("Effect/DeathSplat", fxParams, duration);
+    }
+    
+    private void SetShootParticleDuration(EntityLogic obj)
+    {
+        var fx = obj.GetComponent<ParticleSystem>();
+        var fxSettings = fx.main;
+        //fxSettings.duration = (obj as ParticleEntity).LifeTime;
+        fx.Play(true);
     }
 }
