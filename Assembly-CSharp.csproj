@@ -53,7 +53,6 @@
     <None Include="Assets\AAAGame\DataTable\LevelTable.txt" />
     <None Include="Assets\AAAGame\Language\English.json" />
     <None Include="Assets\AAAGame\Font\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
-    <None Include="Assets\Resources\PerformanceTestRunSettings.json" />
     <None Include="Assets\AAAGame\Font\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
     <None Include="Assets\AAAGame\Materials\Resources\Shader\OutlineMask.shader" />
     <None Include="Assets\AAAGame\Language\Japanese.json" />
@@ -78,7 +77,6 @@
     <None Include="Assets\AAAGame\Language\ChineseSimplified.json" />
     <None Include="Assets\AAAGame\Shader\ASE\FastLit.shader" />
     <None Include="Assets\AAAGame\Font\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
-    <None Include="Assets\Resources\PerformanceTestRunInfo.json" />
     <None Include="Assets\AAAGame\Font\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\AAAGame\Font\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\AAAGame\Materials\Resources\Shader\OutlineFill.shader" />

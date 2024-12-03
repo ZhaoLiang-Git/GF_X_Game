@@ -63,6 +63,15 @@ public class LevelTable : DataRowBase
             private set;
         }
 
+        /// <summary>
+        /// 关卡时间
+        /// </summary>
+        public int LvTime
+        {
+            get;
+            private set;
+        }
+
         public override bool ParseDataRow(string dataRowString, object userData)
         {
             string[] columnStrings = dataRowString.Split(DataTableExtension.DataSplitSeparators);
@@ -79,6 +88,7 @@ public class LevelTable : DataRowBase
             InitMoney = int.Parse(columnStrings[index++]);
             MoneyColorId = int.Parse(columnStrings[index++]);
             LvDisplayName = columnStrings[index++];
+            LvTime = int.Parse(columnStrings[index++]);
 
             return true;
         }
@@ -94,6 +104,7 @@ public class LevelTable : DataRowBase
                     InitMoney = binaryReader.Read7BitEncodedInt32();
                     MoneyColorId = binaryReader.Read7BitEncodedInt32();
                     LvDisplayName = binaryReader.ReadString();
+                    LvTime = binaryReader.Read7BitEncodedInt32();
                 }
             }
 

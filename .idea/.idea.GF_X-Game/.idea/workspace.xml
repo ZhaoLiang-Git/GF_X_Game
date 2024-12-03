@@ -6,22 +6,27 @@
   <component name="ChangeListManager">
     <list default="true" id="7d322eeb-9804-4f5b-a7d3-7daff47b359d" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GF_X-Game/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GF_X-Game/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AAAGameData/DataTables/CombatUnitTable.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/AAAGameData/DataTables/CombatUnitTable.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AAAGameData/DataTables/LevelTable.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/AAAGameData/DataTables/LevelTable.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/DataTable/CombatUnitTable.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/DataTable/CombatUnitTable.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assembly-CSharp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Assembly-CSharp.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AAAGame/DataTable/LevelTable.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/DataTable/LevelTable.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Font/Common/AlibabaPuHuiTi-3-85-Bold SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Font/Common/AlibabaPuHuiTi-3-85-Bold SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/Entity/CarEnemy.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/Entity/CarEnemy.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/Entity/HatchbackCar.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/Entity/HatchbackCar.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/Entity/Lv_2.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/Entity/Lv_2.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Demo/AIEnemyCarEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Demo/AIEnemyCarEntity.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Font/Common/AlibabaSansKR SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Font/Common/AlibabaSansKR SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/UI/GameUIForm.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/UI/GameUIForm.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/UI/MenuUIForm.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Prefabs/UI/MenuUIForm.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/DataTable/LevelTable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/DataTable/LevelTable.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Entity/LevelEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Entity/LevelEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Entity/PlayerCarEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Entity/PlayerCarEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Procedures/MenuProcedure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Procedures/MenuProcedure.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Ash Assets/Arcade Vehicle Physics/Demo Scene/Demo.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Ash Assets/Arcade Vehicle Physics/Demo Scene/Demo.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Procedures/GameProcedure.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/Procedures/GameProcedure.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/UI/GameUIForm.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/UI/GameUIForm.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/AAAGame/Scripts/UI/UIVariables/GameUIForm.Variables.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/AAAGame/Scripts/UI/UIVariables/GameUIForm.Variables.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Ash Assets/Arcade Vehicle Physics/Materials/Friction.physicMaterial" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Ash Assets/Arcade Vehicle Physics/Materials/Friction.physicMaterial" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Hotfix.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Hotfix.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/UnityGameFramework/Configs/ResourceBuilder.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/UnityGameFramework/Configs/ResourceBuilder.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/UnityGameFramework/Configs/ResourceCollection.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/UnityGameFramework/Configs/ResourceCollection.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/UnityGameFramework/Configs/ResourceRuleEditor.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/UnityGameFramework/Configs/ResourceRuleEditor.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/PerformanceTestRunInfo.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/PerformanceTestRunInfo.json.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/PerformanceTestRunSettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/PerformanceTestRunSettings.json.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/Layouts/default-2022.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -143,6 +148,11 @@
       <workItem from="1732500094114" duration="10636000" />
       <workItem from="1732520330907" duration="7000" />
       <workItem from="1732522665456" duration="10177000" />
+      <workItem from="1732545651406" duration="4831000" />
+      <workItem from="1732685816657" duration="20366000" />
+      <workItem from="1732847701752" duration="10937000" />
+      <workItem from="1732876335741" duration="4151000" />
+      <workItem from="1733105980910" duration="20211000" />
     </task>
     <servers />
   </component>

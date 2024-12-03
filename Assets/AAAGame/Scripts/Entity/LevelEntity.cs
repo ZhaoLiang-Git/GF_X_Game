@@ -26,9 +26,17 @@ public class LevelEntity : EntityBase
     //-----TODO：新增加
     static CombatUnitTable m_CombatUnitRow;  
     Dictionary<int, AIEnemyCarEntity> m_AIEnemyCarEntityDic;
+    public static LevelEntity Instance { get; private set; } = null;
+    LevelTable m_LevelTb;
+    public LevelTable LevelTb => m_LevelTb;
+    //正计时该局游戏持续时间
+    private float m_GameTimer = 0;
+    //关卡倒计时
+    public float m_ShowGameTimer  { get; private set; } = 0;
     protected override void OnInit(object userData)
     {
         base.OnInit(userData);
+        Instance = this;
         playerSpawnPoint = transform.Find("PlayerSpawnPoint");
         SpawnManager = transform.Find("SpawnGame").GetComponent<Most_Spawn>();
         m_Spawnners = new List<Spawnner>();
@@ -43,6 +51,7 @@ public class LevelEntity : EntityBase
     protected override async void OnShow(object userData)
     {
         base.OnShow(userData);
+        Instance = this;
         SpawnManager.OnSpawnNewInstantiatedEvent.AddListener(SpawnEnemiesUpdateNew);
         GF.Event.Subscribe(ShowEntitySuccessEventArgs.EventId, OnShowEntitySuccess);
         GF.Event.Subscribe(HideEntityCompleteEventArgs.EventId, OnHideEntityComplete); 
@@ -55,7 +64,9 @@ public class LevelEntity : EntityBase
         m_Spawnners.Clear();
         m_EntityLoadingList.Clear();
         m_Enemies.Clear();
-
+        m_LevelTb = Params.Get<VarObject>(P_LevelData).Value as LevelTable;
+        m_GameTimer = 0;
+        m_ShowGameTimer = m_LevelTb.LvTime;
         // CachedTransform.Find("EnemySpawnPoints").GetComponentsInChildren<Spawnner>(m_Spawnners);
         // var combatUnitTb = GF.DataTable.GetDataTable<CombatUnitTable>();
         // var playerRow = combatUnitTb.GetDataRow(0);
@@ -137,6 +148,26 @@ public class LevelEntity : EntityBase
         }
     }
     #region 新添加测试逻辑
+    /// <summary>
+    /// 用来刷新关卡进行时间
+    /// </summary>
+    /// <param name="elapseSeconds"></param>
+    /// <param name="realElapseSeconds"></param>
+    public void LogicUpdate(float elapseSeconds, float realElapseSeconds)
+    {
+        m_GameTimer += elapseSeconds;
+        //倒计时  
+        m_ShowGameTimer -= elapseSeconds;
+        if (m_GameTimer >= m_LevelTb.LvTime)
+        {
+            if (m_IsGameOver) return;
+            m_IsGameOver = true;
+            GF.LogInfo("倒计时结束了设置游戏结束");
+            var eParms = RefParams.Create();
+            eParms.Set<VarBoolean>("IsWin", true);
+            GF.Event.Fire(GameplayEventArgs.EventId, GameplayEventArgs.Create(GameplayEventType.GameOver, eParms));
+        }
+    }
     //检查敌人对象列表里的数量是否达到最大生成数量
     private bool CheckEnemyCount()
     {
@@ -157,30 +188,6 @@ public class LevelEntity : EntityBase
         entity.ID = entity.GetHashCode();
         //将敌人对象加入列表
         m_AIEnemyCarEntityDic.Add(entity.ID,entity);
-        //  var playerPos = m_PlayerCarEntity.CachedTransform.position;
-        //  var entityEulerAngles = m_PlayerCarEntity.CachedTransform.eulerAngles;
-        //
-        //  // var ids = item.SpawnAllCombatUnits(m_PlayerCarEntity);
-        //  var eParams = EntityParams.Create(position, entityEulerAngles);
-        //  eParams.Set(AIEnemyCarEntity.P_DataTableRow, m_CombatUnitRow);
-        //  eParams.Set<VarInt32>(AIEnemyCarEntity.P_CombatFlag, (int)CombatUnitEntity.CombatFlag.Enemy);
-        //  //if (m_UnitFlag == CombatUnitEntity.CombatFlag.Enemy)
-        //  {
-        //      eParams.Set<VarTransform>(AIEnemyCarEntity.P_Target, m_PlayerCarEntity.CachedTransform);
-        //  }
-        //  int entityId =
-        //      GF.Entity.ShowEntity<AIEnemyCarEntity>(m_CombatUnitRow.PrefabName, Const.EntityGroup.Player, eParams);
-        // var data = GF.Entity.GetEntity(entityId);
-        
-        
-        // for (int i = m_AIEnemyCarEntityList.Count - 1; i >= 0; i--)
-        // {
-        //    
-        // }
-        // foreach (var entityId in i)
-        // {
-        //     m_EntityLoadingList.Add(entityId);
-        // }
     }
     #endregion
     private void OnPlayerBeKilled()

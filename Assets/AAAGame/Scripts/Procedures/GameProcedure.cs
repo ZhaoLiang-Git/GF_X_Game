@@ -34,7 +34,7 @@ public class GameProcedure : ProcedureBase
     protected override void OnUpdate(IFsm<IProcedureManager> procedureOwner, float elapseSeconds, float realElapseSeconds)
     {
         base.OnUpdate(procedureOwner, elapseSeconds, realElapseSeconds);
-
+        m_Level.LogicUpdate(elapseSeconds, realElapseSeconds);
     }
     protected override void OnLeave(IFsm<IProcedureManager> procedureOwner, bool isShutdown)
     {
