@@ -22,7 +22,6 @@
       <Asset Guid="09045e73e44b1d944bafe57ece728071" ResourceName="UI" />
       <Asset Guid="0b69b108d75f47940881a60045f21976" ResourceName="UI" />
       <Asset Guid="0d39ed0185ca8e74283374bdb1c95e2b" ResourceName="Entity" />
-      <Asset Guid="0f8202f9e2cd373479a5fd9ffb614036" ResourceName="Entity" />
       <Asset Guid="13b0b1255d7d6cf44a4d1987723460ef" ResourceName="ScriptableAssets" />
       <Asset Guid="17809c14ab03d914fbb791e882587415" ResourceName="DataTable" />
       <Asset Guid="17c3f565cf73d4740bfaed4f87e98fa3" ResourceName="Language" />
@@ -30,7 +29,6 @@
       <Asset Guid="18d313816561eb94f883cc5522c2158b" ResourceName="UI" />
       <Asset Guid="1b586e20031d8b44a9495620988ad3dc" ResourceName="HotfixDlls" />
       <Asset Guid="1caa4c6fdc3281642b46f7c82c497dc5" ResourceName="Core" />
-      <Asset Guid="1e5bffde4300a9b4080e79b52725b86d" ResourceName="Entity" />
       <Asset Guid="230b0c809e3e6a647af26c803aa90467" ResourceName="SharedAssets" />
       <Asset Guid="2cdf1b85fd520ef46b11f580e9443e78" ResourceName="Language" />
       <Asset Guid="2e9047e5d41122a42941f2db8472a0c9" ResourceName="DataTable" />
@@ -39,6 +37,7 @@
       <Asset Guid="47898ae6a0dbd6146949c86694773439" ResourceName="Entity" />
       <Asset Guid="4d9df7336d07eec4a95b89ac70eb06ea" ResourceName="DataTable" />
       <Asset Guid="53b9781b792f33841a6a088ec392fbd8" ResourceName="SharedAssets" />
+      <Asset Guid="587466d76b832b24883e5b64a9e9bff1" ResourceName="DataTable" />
       <Asset Guid="588ff96c6882fb3448095d7a881bced3" ResourceName="SharedAssets" />
       <Asset Guid="5d19fed2387fc3c4ca37fc9bf11e7190" ResourceName="Language" />
       <Asset Guid="60088dd3b0214654ba9150c7fdda1a8d" ResourceName="DataTable" />
@@ -56,12 +55,10 @@
       <Asset Guid="7fa753003c0b5b24faded9b639aabaef" ResourceName="UI" />
       <Asset Guid="81ed03a317f6d6a43aa694d24e6a8f64" ResourceName="DataTable" />
       <Asset Guid="82897f91c1a5cd041a4b54516ac60412" ResourceName="Entity" />
-      <Asset Guid="8355c2cd028d19042a022132f28b9a44" ResourceName="Entity" />
       <Asset Guid="83bdadb9e1d24a94e8498def13d4804c" ResourceName="Language" />
       <Asset Guid="84a6440c0fd8e974e8986ff4df2d489f" ResourceName="Language" />
       <Asset Guid="879016ef1f756e74081c108699b52383" ResourceName="Entity" />
       <Asset Guid="8a4e2875174034b4aabb43c9ca9028a1" ResourceName="SharedAssets" />
-      <Asset Guid="8d28249d906ec4e9f8d4bd6e6e8eb5e4" ResourceName="Entity" />
       <Asset Guid="8e978eccab638cf429b4757490af6554" ResourceName="Entity" />
       <Asset Guid="92cb04501693359419a839b8d33aace7" ResourceName="UI" />
       <Asset Guid="93e5244c613569f4ca34418e4a2b59b4" ResourceName="DataTable" />
@@ -70,9 +67,7 @@
       <Asset Guid="9deca69555354744b9e1fbdffb007bd8" ResourceName="SharedAssets" />
       <Asset Guid="a29db755b6ae1104a94df297de29cfc8" ResourceName="SharedAssets" />
       <Asset Guid="a8043c8d11e46d648bb702e4a3572406" ResourceName="Entity" />
-      <Asset Guid="ac8badd6cc05441dcae66fedd8490c09" ResourceName="Entity" />
       <Asset Guid="b8f790017d833da45a5aec7344ed4f97" ResourceName="SharedAssets" />
-      <Asset Guid="bf085ea9921554277917f1013b7b531c" ResourceName="Entity" />
       <Asset Guid="c1bf70ce98a49bd4f8b60847ce98cfa8" ResourceName="Language" />
       <Asset Guid="c4e839cf3d001e0499336fb7f53c0310" ResourceName="DataTable" />
       <Asset Guid="c7a26b8d1ff63834298841254b2332c4" ResourceName="UI" />
@@ -83,10 +78,10 @@
       <Asset Guid="dd49d0e931c6ab4498d652aff8dcdf6b" ResourceName="DataTable" />
       <Asset Guid="e09d64781b233da4c8e75adde91c9652" ResourceName="Entity" />
       <Asset Guid="e1a613ebd6f1d6f4a825d14981f3e88d" ResourceName="DataTable" />
+      <Asset Guid="e654726d8f557ef4ca2996e321af04e5" ResourceName="DataTable" />
       <Asset Guid="e81571591a3393745a08aee12b114309" ResourceName="HotfixDlls" />
       <Asset Guid="ec835c8e8455a4e3eab94be7baf9c04a" ResourceName="UI" />
       <Asset Guid="fb3663d475cbeb74ba97e229b86d2504" ResourceName="Entity" />
-      <Asset Guid="fb8e8633995524bc087f71e3861d0ecb" ResourceName="Entity" />
       <Asset Guid="fca0697f771517f41a13845450b0f97a" ResourceName="Entity" />
       <Asset Guid="fd6f9ae5eba339e4f88c00782aadfa70" ResourceName="Language" />
     </Assets>
