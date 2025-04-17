@@ -9,7 +9,7 @@ using UnityGameFramework.Runtime;
 public enum PlayerDataType
 {
     /// <summary>
-    ///玩家金币
+    /// 玩家金币
     /// </summary>
     Coins,
     /// <summary>
@@ -25,13 +25,13 @@ public enum PlayerDataType
     /// </summary>
     Energy,
     /// <summary>
-    /// 玩家Id
+    /// 关卡Id
     /// </summary>
     LevelId
 }
 
 /// <summary>
-/// 玩家数据类，金币钻石等数据
+/// 玩家数据类, 金币/血量等
 /// </summary>
 public class PlayerDataModel : DataModelStorageBase
 {
@@ -48,7 +48,7 @@ public class PlayerDataModel : DataModelStorageBase
         set => SetData(PlayerDataType.Coins, Mathf.Max(0, value));
     }
     /// <summary>
-    /// 关卡Id 
+    /// 关卡
     /// </summary>
     public int LevelId
     {
@@ -64,30 +64,9 @@ public class PlayerDataModel : DataModelStorageBase
     {
         m_PlayerDataDic = new Dictionary<PlayerDataType, int>();
     }
-    protected override void OnCreate(RefParams userdata)
-    {
-        base.OnCreate(userdata);
-        GF.Event.Subscribe(GFEventArgs.EventId, OnGFEventCallback);
-    }
 
-
-    protected override void OnRelease()
-    {
-        base.OnRelease();
-        GF.Event.Unsubscribe(GFEventArgs.EventId, OnGFEventCallback);
-    }
-
-    private void OnGFEventCallback(object sender, GameEventArgs e)
-    {
-        var args = e as GFEventArgs;
-        if(args.EventType == GFEventType.ApplicationQuit)
-        {
-            GF.DataModel.ReleaseDataModel<PlayerDataModel>();
-        }
-    }
     protected override void OnInitialDataModel()
     {
-        //初始化数据方法，在没有本地缓存数据的时候，在这里初始化数据
         m_PlayerDataDic[PlayerDataType.Coins] = GF.Config.GetInt("DefaultCoins");
         m_PlayerDataDic[PlayerDataType.Diamond] = GF.Config.GetInt("DefaultDiamonds");
         m_PlayerDataDic[PlayerDataType.Hp] = 100;
@@ -102,7 +81,6 @@ public class PlayerDataModel : DataModelStorageBase
     }
     public void SetData(PlayerDataType tp, int value, bool triggerEvent = true)
     {
-        //数据改变发送事件，刷新UI
         int oldValue = m_PlayerDataDic[tp];
         m_PlayerDataDic[tp] = value;
 
