@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using System.Text;
 
 namespace UGF.EditorTools
 {
@@ -21,12 +22,12 @@ namespace UGF.EditorTools
     {
         const string DISABLE_HYBRIDCLR = "DISABLE_HYBRIDCLR";
         const string ENABLE_OBFUZ = "ENABLE_OBFUZ";
-        [MenuItem("HybridCLR/CompileDll And Copy【生成热更dll】", false, 4)]
+        [MenuItem("HybridCLR/CompileDll And Copy[生成热更dll]", false, 4)]
         public static void CompileTargetDll()
         {
             CompileTargetDll(false);
         }
-        [MenuItem("HybridCLR/Obfuz GenerateLinkXml", false, 5)]
+        [MenuItem("HybridCLR/Obfuz GenerateLinkXml[混淆后代码裁剪配置]", false, 5)]
         public static void GenerateLinkXml()
         {
             CompileDllCommand.CompileDllActiveBuildTarget();
@@ -46,7 +47,7 @@ namespace UGF.EditorTools
 
             List<string> hotfixAssemblies = SettingsUtil.HotUpdateAssemblyNamesExcludePreserved;
 
-            var analyzer = new HybridCLR.Editor.Link.Analyzer(new HybridCLR.Editor.Meta.PathAssemblyResolver(builder.ObfuscatedAssemblyOutputPath));
+            var analyzer = new HybridCLR.Editor.Link.Analyzer(new HybridCLR.Editor.Meta.PathAssemblyResolver(builder.CoreSettingsFacade.obfuscatedAssemblyOutputPath));
             var refTypes = analyzer.CollectRefs(hotfixAssemblies);
 
             // HyridCLR中 LinkXmlWritter不是public的，在其他程序集无法访问，只能通过反射操作
@@ -134,6 +135,7 @@ namespace UGF.EditorTools
                 Directory.Delete(aotSaveDir, true);
             }
             Directory.CreateDirectory(aotSaveDir);
+            var aotDllEncryptCode = UTF8Encoding.UTF8.GetBytes(ConstBuiltin.AOT_DLLS_KEY);
             foreach (var dll in HybridCLR.Editor.SettingsUtil.AOTAssemblyNames)
             {
                 string dllPath = UtilityBuiltin.AssetsPath.GetCombinePath(aotDllDir, dll.EndsWith(".dll") ? dll : dll + ".dll");
@@ -144,7 +146,13 @@ namespace UGF.EditorTools
                     continue;
                 }
                 string dllBytesPath = UtilityBuiltin.AssetsPath.GetCombinePath(aotSaveDir, Utility.Text.Format("{0}.bytes", dll));
-                File.Copy(dllPath, dllBytesPath, true);
+
+                var dllBytes = File.ReadAllBytes(dllPath);
+                if (AppSettings.Instance.EncryptAOTDlls != null && AppSettings.Instance.EncryptAOTDlls.Contains(dll))
+                {
+                    Utility.Encryption.GetQuickSelfXorBytes(dllBytes, aotDllEncryptCode);
+                }
+                File.WriteAllBytes(dllBytesPath, dllBytes);
             }
 
             return failList.ToArray();
@@ -218,6 +226,8 @@ namespace UGF.EditorTools
         }
         public static void EnableObfuz()
         {
+            ObfuzMenu.GenerateEncryptionVM();
+            ObfuzMenu.SaveSecretFile();
 #if UNITY_2021_1_OR_NEWER
             var bTarget = GetCurrentNamedBuildTarget();
             PlayerSettings.GetScriptingDefineSymbols(bTarget, out string[] defines);
@@ -266,6 +276,7 @@ namespace UGF.EditorTools
                     return;
                 }
             }
+            Environment.SetEnvironmentVariable("UNITY_IL2CPP_PATH", disableHybridCLR ? "" : HybridCLR.Editor.SettingsUtil.LocalIl2CppDir);
             if (disableHybridCLR)
             {
                 bool changed = false;
@@ -283,8 +294,6 @@ namespace UGF.EditorTools
                     File.WriteAllText(builtinFile, jsonData.ToString(Newtonsoft.Json.Formatting.Indented));
                     AssetDatabase.Refresh();
                 }
-                Environment.SetEnvironmentVariable("UNITY_IL2CPP_PATH", string.Empty);
-                Debug.Log("Remove UNITY_IL2CPP_PATH");
             }
             else
             {
@@ -303,11 +312,6 @@ namespace UGF.EditorTools
                     File.WriteAllText(builtinFile, jsonData.ToString(Newtonsoft.Json.Formatting.Indented));
                     AssetDatabase.Refresh();
                 }
-                if (Directory.Exists(HybridCLR.Editor.SettingsUtil.LocalIl2CppDir))
-                {
-                    Environment.SetEnvironmentVariable("UNITY_IL2CPP_PATH", HybridCLR.Editor.SettingsUtil.LocalIl2CppDir);
-                    Debug.Log("Set UNITY_IL2CPP_PATH:" + HybridCLR.Editor.SettingsUtil.LocalIl2CppDir);
-                }
             }
         }
         private static UnityEditor.BuildTargetGroup GetCurrentBuildTarget()
@@ -317,7 +321,7 @@ namespace UGF.EditorTools
 #elif UNITY_IOS
         return UnityEditor.BuildTargetGroup.iOS;
 #elif UNITY_STANDALONE
-        return UnityEditor.BuildTargetGroup.Standalone;
+            return UnityEditor.BuildTargetGroup.Standalone;
 #elif UNITY_WEBGL
         return UnityEditor.BuildTargetGroup.WebGL;
 #else
@@ -332,7 +336,7 @@ namespace UGF.EditorTools
 #elif UNITY_IOS
         return UnityEditor.Build.NamedBuildTarget.iOS;
 #elif UNITY_STANDALONE
-        return UnityEditor.Build.NamedBuildTarget.Standalone;
+            return UnityEditor.Build.NamedBuildTarget.Standalone;
 #elif UNITY_WEBGL
         return UnityEditor.Build.NamedBuildTarget.WebGL;
 #else
