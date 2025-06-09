@@ -1432,7 +1432,7 @@ GameObject:
   - component: {fileID: 8579408013441669582}
   - component: {fileID: 6999059183056934916}
   m_Layer: 0
-  m_Name: Handle
+  m_Name: VibrateHandle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1455,7 +1455,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -56.089996, y: 0}
+  m_AnchoredPosition: {x: 56.09, y: 0}
   m_SizeDelta: {x: 148.38, y: 88.07}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8579408013441669582
@@ -1486,7 +1486,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eae3f045f0a2c4b579015bdba6e0ef05, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2236,8 +2236,17 @@ MonoBehaviour:
     - {fileID: 4898068743401733356}
     VarType: TMPro.TextMeshProUGUI
     VarPrefix: 0
+  - VarName: varVibrateHandle
+    Targets:
+    - {fileID: 2742299504103707367}
+    VarType: UnityEngine.RectTransform
+    VarPrefix: 0
+  m_UIAnimationType: 0
   m_OpenAnimation: {fileID: 3290982404624986673}
   m_CloseAnimation: {fileID: 0}
+  m_ReverseOpenAnimAsClose: 1
+  m_OpenAnimationName: 
+  m_CloseAnimationName: 
   varVersionTxt: {fileID: 8488177668127629767}
   varMusicSlider: {fileID: 7262407875564193944}
   varSoundFxSlider: {fileID: 82386533048419239}
@@ -2249,6 +2258,7 @@ MonoBehaviour:
   varBtnRating: {fileID: 2896060760242521150}
   varIconFlag: {fileID: 5932411332736137720}
   varLanguageName: {fileID: 3087564304444158503}
+  varVibrateHandle: {fileID: 4054704481032116278}
 --- !u!114 &3290982404624986673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2327,6 +2337,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   m_PlayOnAwake: 0
+  m_ResetOnAwake: 0
   m_Delay: 0
   m_Ease: 6
   m_Loops: 1

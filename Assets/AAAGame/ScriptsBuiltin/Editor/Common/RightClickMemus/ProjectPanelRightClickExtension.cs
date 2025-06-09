@@ -3,12 +3,15 @@ using System;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using UnityEditor.Compilation;
 using UnityEngine;
 
 namespace UGF.EditorTools
 {
     public partial class ProjectPanelRightClickExtension
     {
+        public const string ADD_SCRIPT_TASK = "ADD_UISCRIPT_TASK";
+
         [MenuItem("Assets/GF Tools/Clear Prefabs Missing Scripts", priority = 2)]
         static void ClearMissingScripts()
         {
@@ -119,20 +122,48 @@ namespace UGF.EditorTools
         static void CreateUIFormMenu()
         {
             string savePath = AssetDatabase.GetAssetPath(Selection.activeObject);
-            CreatePrefabWithRename(ConstEditor.UIFormTemplate, savePath, "NewUIFormPrefab");
+            CreateUIPrefabWithRename(ConstEditor.UIFormTemplate, savePath, "NewUIForm");
         }
         [MenuItem("Assets/GF Tools/Create/UIDialog Prefab", priority = 2)]
         static void CreateUIDialogMenu()
         {
             string savePath = AssetDatabase.GetAssetPath(Selection.activeObject);
-            CreatePrefabWithRename(ConstEditor.UIDialogTemplate, savePath, "NewUIDialogPrefab");
+            CreateUIPrefabWithRename(ConstEditor.UIDialogTemplate, savePath, "NewUIDialog");
         }
-        static void CreatePrefabWithRename(string srcAsset, string savePath, string fileName)
+        [MenuItem("Assets/GF Tools/Create/UIForm Prefab And Script", priority = 3)]
+        static void CreateUIFormAndScriptMenu()
+        {
+            string savePath = AssetDatabase.GetAssetPath(Selection.activeObject);
+            CreateUIPrefabWithRename(ConstEditor.UIFormTemplate, savePath, "NewUIForm", true);
+        }
+        [MenuItem("Assets/GF Tools/Create/UIDialog Prefab And Script", priority = 4)]
+        static void CreateUIDialogAndScriptMenu()
+        {
+            string savePath = AssetDatabase.GetAssetPath(Selection.activeObject);
+            CreateUIPrefabWithRename(ConstEditor.UIDialogTemplate, savePath, "NewUIDialog", true);
+        }
+        [MenuItem("Assets/GF Tools/Create/UIItem And Script", priority = 5)]
+        static void CreateUIItemAndScriptMenu()
+        {
+            string savePath = AssetDatabase.GetAssetPath(Selection.activeObject);
+            CreateUIItemWithRename(ConstEditor.UIItemTemplate, savePath, "NewUIItem", true);
+        }
+        static void CreateUIPrefabWithRename(string srcAsset, string savePath, string fileName, bool createUIScriptFile = false)
         {
             if (string.IsNullOrEmpty(savePath) || !AssetDatabase.IsValidFolder(savePath) || !File.Exists(srcAsset)) return;
             ProjectWindowUtil.StartNameEditingIfProjectWindowExists(
                 0,
-                ScriptableObject.CreateInstance<DoCreatePrefab>(),
+                createUIScriptFile ? ScriptableObject.CreateInstance<DoCreateUIPrefabAndScriptFile>() : ScriptableObject.CreateInstance<DoCreatePrefab>(),
+                Utility.Text.Format("{0}.prefab", fileName),
+                EditorGUIUtility.FindTexture("Prefab Icon"),
+                srcAsset);
+        }
+        static void CreateUIItemWithRename(string srcAsset, string savePath, string fileName, bool createUIScriptFile = false)
+        {
+            if (string.IsNullOrEmpty(savePath) || !AssetDatabase.IsValidFolder(savePath) || !File.Exists(srcAsset)) return;
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(
+                0,
+                createUIScriptFile ? ScriptableObject.CreateInstance<DoCreateUIItemAndScriptFile>() : ScriptableObject.CreateInstance<DoCreatePrefab>(),
                 Utility.Text.Format("{0}.prefab", fileName),
                 EditorGUIUtility.FindTexture("Prefab Icon"),
                 srcAsset);
@@ -182,6 +213,24 @@ namespace UGF.EditorTools
             var result = strBuilder.ToString().TrimEnd(Environment.NewLine.ToCharArray());
             EditorGUIUtility.systemCopyBuffer = result;
         }
+
+        [InitializeOnLoadMethod]
+        private static void TaskRefresh()
+        {
+            if (EditorPrefs.HasKey(ADD_SCRIPT_TASK))
+            {
+                var infos = EditorPrefs.GetString(ADD_SCRIPT_TASK).Split('|');
+                EditorPrefs.DeleteKey(ADD_SCRIPT_TASK);
+                if (infos.Length != 2) return;
+                var goAssetFile = infos[0];
+                var monoScriptFile = infos[1];
+                var targetPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(goAssetFile);
+                var monoScript = AssetDatabase.LoadAssetAtPath<MonoScript>(monoScriptFile);
+                if (monoScript == null || targetPrefab == null) return;
+                var monoType = monoScript.GetClass();
+                targetPrefab.GetOrAddComponent(monoType);
+            }
+        }
     }
     class DoCreatePrefab : UnityEditor.ProjectWindowCallback.EndNameEditAction
     {
@@ -201,5 +250,80 @@ namespace UGF.EditorTools
             }
         }
     }
+    class DoCreateUIPrefabAndScriptFile : UnityEditor.ProjectWindowCallback.EndNameEditAction
+    {
+        public override void Action(int instanceId, string pathName, string resourceFile)
+        {
+            try
+            {
+                if (AssetDatabase.CopyAsset(resourceFile, pathName))
+                {
+                    var newPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(pathName);
+                    ProjectWindowUtil.ShowCreatedAsset(newPrefab);
+
+                    var uiPrefabName = Path.GetFileNameWithoutExtension(pathName);
+                    var uiScriptFile = UtilityBuiltin.AssetsPath.GetCombinePath(ConstEditor.UIScriptsPath, uiPrefabName + ".cs");
+                    if (File.Exists(uiScriptFile))
+                    {
+                        Debug.LogWarningFormat("创建UI脚本失败! 文件已存在:{0}", uiScriptFile);
+                        return;
+                    }
+                    if (!File.Exists(ConstEditor.UIScriptFileTemplate))
+                    {
+                        Debug.LogErrorFormat("创建UI脚本失败! 文件模板不存在:{0}", ConstEditor.UIScriptFileTemplate);
+                        return;
+                    }
+                    var text = File.ReadAllText(ConstEditor.UIScriptFileTemplate, UTF8Encoding.UTF8);
+                    text = text.Replace("_CLASS_NAME_", uiPrefabName);
+                    File.WriteAllText(uiScriptFile, text, UTF8Encoding.UTF8);
+                    AssetDatabase.Refresh();
+                    var taskInfo = Utility.Text.Format("{0}|{1}", pathName, uiScriptFile);
+                    EditorPrefs.SetString(ProjectPanelRightClickExtension.ADD_SCRIPT_TASK, taskInfo);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+    }
+    class DoCreateUIItemAndScriptFile : UnityEditor.ProjectWindowCallback.EndNameEditAction
+    {
+        public override void Action(int instanceId, string pathName, string resourceFile)
+        {
+            try
+            {
+                if (AssetDatabase.CopyAsset(resourceFile, pathName))
+                {
+                    var newPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(pathName);
+                    ProjectWindowUtil.ShowCreatedAsset(newPrefab);
+
+                    var uiPrefabName = Path.GetFileNameWithoutExtension(pathName);
+                    var uiScriptFile = UtilityBuiltin.AssetsPath.GetCombinePath(ConstEditor.UIItemScriptsPath, uiPrefabName + ".cs");
+                    if (File.Exists(uiScriptFile))
+                    {
+                        Debug.LogWarningFormat("创建UI脚本失败! 文件已存在:{0}", uiScriptFile);
+                        return;
+                    }
+                    if (!File.Exists(ConstEditor.UIItemScriptFileTemplate))
+                    {
+                        Debug.LogErrorFormat("创建UI脚本失败! 文件模板不存在:{0}", ConstEditor.UIItemScriptFileTemplate);
+                        return;
+                    }
+                    var text = File.ReadAllText(ConstEditor.UIItemScriptFileTemplate, UTF8Encoding.UTF8);
+                    text = text.Replace("_CLASS_NAME_", uiPrefabName);
+                    File.WriteAllText(uiScriptFile, text, UTF8Encoding.UTF8);
+                    AssetDatabase.Refresh();
+                    var taskInfo = Utility.Text.Format("{0}|{1}", pathName, uiScriptFile);
+                    EditorPrefs.SetString(ProjectPanelRightClickExtension.ADD_SCRIPT_TASK, taskInfo);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+    }
+
 }
 

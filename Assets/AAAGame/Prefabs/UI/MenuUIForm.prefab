@@ -1048,5 +1048,4 @@ MonoBehaviour:
   m_CloseAnimation: {fileID: 0}
   m_OpenAnimationName: 
   m_CloseAnimationName: 
-  showLvSwitch: 0
   moneyText: {fileID: 6340830591993899600}

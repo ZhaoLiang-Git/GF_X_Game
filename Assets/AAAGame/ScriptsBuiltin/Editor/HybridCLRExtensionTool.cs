@@ -20,55 +20,30 @@ namespace UGF.EditorTools
 {
     public class HybridCLRExtensionTool
     {
-        const string DISABLE_HYBRIDCLR = "DISABLE_HYBRIDCLR";
-        const string ENABLE_OBFUZ = "ENABLE_OBFUZ";
+        public const string DISABLE_HYBRIDCLR = "DISABLE_HYBRIDCLR";
+        public const string ENABLE_OBFUZ = "ENABLE_OBFUZ";
         [MenuItem("HybridCLR/CompileDll And Copy[生成热更dll]", false, 4)]
         public static void CompileTargetDll()
         {
             CompileTargetDll(false);
         }
-        [MenuItem("HybridCLR/Obfuz GenerateLinkXml[混淆后代码裁剪配置]", false, 5)]
+        [MenuItem("HybridCLR/Copy AotDll To Project[AOT dlls到工程]", false, 5)]
+        public static void CopyAotDll2ResourcePath()
+        {
+            CopyAotDllsToProject(EditorUserBuildSettings.activeBuildTarget);
+        }
+        [MenuItem("HybridCLR/ObfuzExtension/Obfuz GenerateLinkXml[混淆后代码裁剪配置]", false)]
         public static void GenerateLinkXml()
         {
-            CompileDllCommand.CompileDllActiveBuildTarget();
-            BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
-            var obfuzSettings = ObfuzSettings.Instance;
-
-            var assemblySearchDirs = new List<string>
-        {
-            SettingsUtil.GetHotUpdateDllsOutputDirByTarget(target),
-        };
-            ObfuscatorBuilder builder = ObfuscatorBuilder.FromObfuzSettings(obfuzSettings, target, true);
-            builder.InsertTopPriorityAssemblySearchPaths(assemblySearchDirs);
-
-            Obfuscator obfuz = builder.Build();
-            obfuz.Run();
-
-
-            List<string> hotfixAssemblies = SettingsUtil.HotUpdateAssemblyNamesExcludePreserved;
-
-            var analyzer = new HybridCLR.Editor.Link.Analyzer(new HybridCLR.Editor.Meta.PathAssemblyResolver(builder.CoreSettingsFacade.obfuscatedAssemblyOutputPath));
-            var refTypes = analyzer.CollectRefs(hotfixAssemblies);
-
-            // HyridCLR中 LinkXmlWritter不是public的，在其他程序集无法访问，只能通过反射操作
-            var linkXmlWriter = typeof(SettingsUtil).Assembly.GetType("HybridCLR.Editor.Link.LinkXmlWriter");
-            var writeMethod = linkXmlWriter.GetMethod("Write", BindingFlags.Public | BindingFlags.Instance);
-            var instance = Activator.CreateInstance(linkXmlWriter);
-            string linkXmlOutputPath = $"{Application.dataPath}/Plugins/Obfuz/link.xml";
-            writeMethod.Invoke(instance, new object[] { linkXmlOutputPath, refTypes });
-            Debug.Log($"[GenerateLinkXmlForObfuscatedAssembly] output:{linkXmlOutputPath}");
-            AssetDatabase.Refresh();
+            Obfuz.Unity.LinkXmlProcess.GenerateAdditionalLinkXmlFile(EditorUserBuildSettings.activeBuildTarget);
         }
         public static void CompileTargetDll(bool includeAotDll)
         {
             var activeTarget = EditorUserBuildSettings.activeBuildTarget;
+            HybridCLR.Editor.Commands.CompileDllCommand.CompileDllActiveBuildTarget();
             if (Obfuz.Settings.ObfuzSettings.Instance.enable)
             {
-                ObfuscateUtil.CompileAndObfuscateHotUpdateAssemblies(activeTarget);
-            }
-            else
-            {
-                HybridCLR.Editor.Commands.CompileDllCommand.CompileDllActiveBuildTarget();
+                ObfuscateUtil.ObfuscateHotUpdateAssemblies(activeTarget, GetObfuzDllsDir(activeTarget));
             }
             var desDir = UtilityBuiltin.AssetsPath.GetCombinePath(Application.dataPath, ConstBuiltin.HOT_FIX_DLL_DIR);
             var dllFils = Directory.GetFiles(desDir, "*.dll.bytes");
@@ -89,6 +64,10 @@ namespace UGF.EditorTools
                 return;
             }
         }
+        static string GetObfuzDllsDir(BuildTarget activeTarget)
+        {
+            return SettingsUtil.GetHotUpdateDllsOutputDirByTarget(activeTarget) + "Obfuz";
+        }
         /// <summary>
         /// 把热更新dll拷贝到指定目录
         /// </summary>
@@ -100,10 +79,12 @@ namespace UGF.EditorTools
         {
             List<string> failList = new List<string>();
             string hotfixDllSrcDir = HybridCLR.Editor.SettingsUtil.GetHotUpdateDllsOutputDirByTarget(target);
-
-            foreach (var dll in HybridCLR.Editor.SettingsUtil.HotUpdateAssemblyFilesIncludePreserved)
+            string obfuzDllSrcDir = GetObfuzDllsDir(target);
+            var obfuzDllList = Obfuz.Settings.ObfuzSettings.Instance.assemblySettings.GetObfuscationRelativeAssemblyNames();
+            foreach (var dll in HybridCLR.Editor.SettingsUtil.HotUpdateAssemblyNamesIncludePreserved)
             {
-                string dllPath = UtilityBuiltin.AssetsPath.GetCombinePath(hotfixDllSrcDir, dll);
+                bool isObfuzDll = Obfuz.Settings.ObfuzSettings.Instance.enable && obfuzDllList.Contains(dll);
+                string dllPath = UtilityBuiltin.AssetsPath.GetCombinePath(isObfuzDll ? obfuzDllSrcDir : hotfixDllSrcDir, dll + ".dll");
                 if (File.Exists(dllPath))
                 {
                     string dllBytesPath = UtilityBuiltin.AssetsPath.GetCombinePath(desDir, Utility.Text.Format("{0}.bytes", dll));
@@ -121,7 +102,7 @@ namespace UGF.EditorTools
                 failList.AddRange(failNames);
             }
             var hotfixListFile = UtilityBuiltin.AssetsPath.GetCombinePath(Application.dataPath, ConstBuiltin.HOT_FIX_DLL_DIR, "HotfixFileList.txt");
-            File.WriteAllText(hotfixListFile, UtilityBuiltin.Json.ToJson(HybridCLR.Editor.SettingsUtil.HotUpdateAssemblyFilesIncludePreserved), System.Text.Encoding.UTF8);
+            File.WriteAllText(hotfixListFile, UtilityBuiltin.Json.ToJson(HybridCLR.Editor.SettingsUtil.HotUpdateAssemblyNamesIncludePreserved), System.Text.Encoding.UTF8);
             AssetDatabase.Refresh();
             return failList.ToArray();
         }
@@ -138,7 +119,7 @@ namespace UGF.EditorTools
             var aotDllEncryptCode = UTF8Encoding.UTF8.GetBytes(ConstBuiltin.AOT_DLLS_KEY);
             foreach (var dll in HybridCLR.Editor.SettingsUtil.AOTAssemblyNames)
             {
-                string dllPath = UtilityBuiltin.AssetsPath.GetCombinePath(aotDllDir, dll.EndsWith(".dll") ? dll : dll + ".dll");
+                string dllPath = UtilityBuiltin.AssetsPath.GetCombinePath(aotDllDir, dll + ".dll");
                 if (!File.Exists(dllPath))
                 {
                     Debug.LogWarning($"ab中添加AOT补充元数据dll:{dllPath} 时发生错误,文件不存在。裁剪后的AOT dll在BuildPlayer时才能生成，因此需要你先构建一次游戏App后再打包。");
@@ -346,7 +327,7 @@ namespace UGF.EditorTools
 #endif
         public static string GetStripAssembliesDir(BuildTarget target)
         {
-            string projectDir = SettingsUtil.ProjectDir;
+            string projectDir = Directory.GetParent(Application.dataPath).ToString();
             switch (target)
             {
                 case BuildTarget.StandaloneWindows:
