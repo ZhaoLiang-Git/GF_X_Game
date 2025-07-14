@@ -1,22 +1,24 @@
-using GameFramework;
 using System;
+using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using UnityEditor;
-using UnityEngine;
+using System.Text;
+using System.Xml;
+using Cysharp.Threading.Tasks;
+using GameFramework;
 using GameFramework.Resource;
 using HybridCLR.Editor.Commands;
-using System.Text;
-using System.Linq;
-using static UnityEditor.BuildPlayerWindow;
-using System.Collections;
-using UnityEditor.Build.Reporting;
-using UnityGameFramework.Editor.ResourceTools;
-using Cysharp.Threading.Tasks;
-using UnityEditor.Build;
-using System.Xml;
-using UGF.EditorTools.ResourceTools;
+using Obfuz.Settings;
 using Obfuz.Unity;
+using Obfuz4HybridCLR;
+using UGF.EditorTools.ResourceTools;
+using UnityEditor;
+using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
+using UnityEngine;
+using UnityGameFramework.Editor.ResourceTools;
+using static UnityEditor.BuildPlayerWindow;
 
 namespace UGF.EditorTools
 {
@@ -305,11 +307,10 @@ namespace UGF.EditorTools
                     {
                         EditorGUILayout.LabelField("Enable Obfuz", GUILayout.Width(160f));
                         EditorGUI.BeginChangeCheck();
-                        Obfuz.Settings.ObfuzSettings.Instance.enable = EditorGUILayout.Toggle(Obfuz.Settings.ObfuzSettings.Instance.enable);
+                        AppBuildSettings.Instance.EnableObfuz = EditorGUILayout.Toggle(AppBuildSettings.Instance.EnableObfuz);
                         if (EditorGUI.EndChangeCheck())
                         {
                             RefreshObfuzEnable();
-                            Obfuz.Settings.ObfuzSettings.Save();
                         }
                     }
                     EditorGUILayout.EndHorizontal();
@@ -477,7 +478,8 @@ namespace UGF.EditorTools
         }
         private void RefreshObfuzEnable()
         {
-            if (Obfuz.Settings.ObfuzSettings.Instance.enable)
+            Obfuz.Settings.ObfuzSettings.Instance.buildPipelineSettings.enable = AppBuildSettings.Instance.EnableObfuz;
+            if (AppBuildSettings.Instance.EnableObfuz)
             {
 #if !ENABLE_OBFUZ
                 HybridCLRExtensionTool.EnableObfuz();
@@ -489,6 +491,8 @@ namespace UGF.EditorTools
                 HybridCLRExtensionTool.DisableObfuz();
 #endif
             }
+            Obfuz.Settings.ObfuzSettings.Save();
+            AppBuildSettings.Save();
         }
         private void RefreshHybridCLREnable()
         {
@@ -917,15 +921,29 @@ namespace UGF.EditorTools
             var installer = new HybridCLR.Editor.Installer.InstallerController();
             if (!installer.HasInstalledHybridCLR())
             {
-                throw new BuildFailedException($"You have not initialized HybridCLR, please install it via menu 'HybridCLR/Installer'");
+                throw new BuildFailedException("You have not initialized HybridCLR, please install it via menu 'HybridCLR/Installer'");
             }
-            if (Obfuz.Settings.ObfuzSettings.Instance.enable)
+            if (AppBuildSettings.Instance.EnableObfuz)
             {
                 ObfuzMenu.GenerateEncryptionVM();
                 ObfuzMenu.SaveSecretFile();
             }
-
             BuildTarget target = EditorUserBuildSettings.activeBuildTarget;
+#if ENABLE_OBFUZ
+            CompileDllCommand.CompileDll(target);
+            Il2CppDefGeneratorCommand.GenerateIl2CppDef();
+            LinkGeneratorCommand.GenerateLinkXml(target);
+            if (generateAotDll)
+            {
+                StripAOTDllCommand.GenerateStripedAOTDlls(target);
+                AOTReferenceGeneratorCommand.GenerateAOTGenericReference(target);
+            }
+
+            string obfuscatedHotUpdateDllPath = Obfuz4HybridCLR.PrebuildCommandExt.GetObfuscatedHotUpdateAssemblyOutputPath(target);
+            ObfuscateUtil.ObfuscateHotUpdateAssemblies(target, obfuscatedHotUpdateDllPath);
+            Obfuz4HybridCLR.PrebuildCommandExt.GenerateMethodBridgeAndReversePInvokeWrapper(target, obfuscatedHotUpdateDllPath);
+            HybridCLRExtensionTool.CopyAotDllsToProject(target);
+#else
             HybridCLRExtensionTool.CompileTargetDll(false);
             Il2CppDefGeneratorCommand.GenerateIl2CppDef();
 
@@ -935,11 +953,12 @@ namespace UGF.EditorTools
             {
                 // 生成裁剪后的aot dll
                 StripAOTDllCommand.GenerateStripedAOTDlls(target);
+                AOTReferenceGeneratorCommand.GenerateAOTGenericReference(target);
             }
-            HybridCLRExtensionTool.CopyAotDllsToProject(target);
-            // 桥接函数生成依赖于AOT dll，必须保证已经build过，生成AOT dll
+                // 桥接函数生成依赖于AOT dll，必须保证已经build过，生成AOT dll
             MethodBridgeGeneratorCommand.GenerateMethodBridgeAndReversePInvokeWrapper(target);
-            AOTReferenceGeneratorCommand.GenerateAOTGenericReference(target);
+            HybridCLRExtensionTool.CopyAotDllsToProject(target);
+#endif
         }
         private void BrowseOutputDirectory()
         {
@@ -1045,7 +1064,7 @@ namespace UGF.EditorTools
         {
             EditorUtility.SetDirty(AppSettings.Instance);
             AppBuildSettings.Save();
-            EditorUtility.SetDirty(Obfuz.Settings.ObfuzSettings.Instance);
+            Obfuz.Settings.ObfuzSettings.Save();
             if (m_Controller.Save())
             {
                 Debug.Log("Save configuration success.");

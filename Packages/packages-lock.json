@@ -1,18 +1,18 @@
 {
   "dependencies": {
     "com.code-philosophy.hybridclr": {
-      "version": "https://gitee.com/focus-creative-games/hybridclr_unity.git",
+      "version": "https://gitee.com/focus-creative-games/hybridclr_unity.git#v8.3.0",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "59a3c3974a6e435e0ed57fb9af61fbbc6d17a8b7"
+      "hash": "ee7af5c5926c12402b3ccd121408646f1cf3128f"
     },
     "com.code-philosophy.obfuz": {
-      "version": "https://gitee.com/focus-creative-games/obfuz.git#1.x",
+      "version": "https://gitee.com/focus-creative-games/obfuz.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "26b4828094f0604f5799c4b5b56214b58ff8f25e"
+      "hash": "083ddd303506c2c348d78f031dad33bc771cb27e"
     },
     "com.code-philosophy.obfuz4hybridclr": {
       "version": "https://gitee.com/focus-creative-games/obfuz4hybridclr.git",
@@ -26,15 +26,6 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {}
-    },
-    "com.unity.ai.navigation": {
-      "version": "1.1.6",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.modules.ai": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
       "version": "1.8.21",

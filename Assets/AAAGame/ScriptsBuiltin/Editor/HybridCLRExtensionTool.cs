@@ -1,20 +1,22 @@
 #if UNITY_EDITOR
-using GameFramework;
-using HybridCLR.Editor;
-using HybridCLR.Editor.Commands;
-using Newtonsoft.Json.Linq;
-using Obfuz.Settings;
-using Obfuz;
-using Obfuz.Unity;
-using Obfuz4HybridCLR;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using GameFramework;
+using HybridCLR.Editor;
+using HybridCLR.Editor.AOT;
+using HybridCLR.Editor.Commands;
+using Newtonsoft.Json.Linq;
+using Obfuz;
+using Obfuz.Settings;
+using Obfuz.Unity;
+using Obfuz4HybridCLR;
+using SevenZip;
 using UnityEditor;
 using UnityEngine;
-using System.Text;
 
 namespace UGF.EditorTools
 {
@@ -37,11 +39,12 @@ namespace UGF.EditorTools
         {
             Obfuz.Unity.LinkXmlProcess.GenerateAdditionalLinkXmlFile(EditorUserBuildSettings.activeBuildTarget);
         }
-        public static void CompileTargetDll(bool includeAotDll)
+        public static void CompileTargetDll(bool copyAotDlls)
         {
             var activeTarget = EditorUserBuildSettings.activeBuildTarget;
-            HybridCLR.Editor.Commands.CompileDllCommand.CompileDllActiveBuildTarget();
-            if (Obfuz.Settings.ObfuzSettings.Instance.enable)
+            //Obfuz4HybridCLR.PrebuildCommandExt.CompileAndObfuscateDll();
+            HybridCLR.Editor.Commands.CompileDllCommand.CompileDll(activeTarget);
+            if (AppBuildSettings.Instance.EnableObfuz)
             {
                 ObfuscateUtil.ObfuscateHotUpdateAssemblies(activeTarget, GetObfuzDllsDir(activeTarget));
             }
@@ -51,7 +54,7 @@ namespace UGF.EditorTools
             {
                 File.Delete(dllFils[i]);
             }
-            string[] failList = CopyHotfixDllTo(activeTarget, desDir, includeAotDll);
+            string[] failList = CopyHotfixDllTo(activeTarget, desDir, copyAotDlls);
             string content = $"Compile dlls and copy to '{ConstBuiltin.HOT_FIX_DLL_DIR}' success.";
             if (failList.Length > 0)
             {
@@ -66,7 +69,8 @@ namespace UGF.EditorTools
         }
         static string GetObfuzDllsDir(BuildTarget activeTarget)
         {
-            return SettingsUtil.GetHotUpdateDllsOutputDirByTarget(activeTarget) + "Obfuz";
+            //return SettingsUtil.GetHotUpdateDllsOutputDirByTarget(activeTarget) + "Obfuz";
+            return Obfuz4HybridCLR.PrebuildCommandExt.GetObfuscatedHotUpdateAssemblyOutputPath(activeTarget);
         }
         /// <summary>
         /// 把热更新dll拷贝到指定目录
@@ -83,7 +87,7 @@ namespace UGF.EditorTools
             var obfuzDllList = Obfuz.Settings.ObfuzSettings.Instance.assemblySettings.GetObfuscationRelativeAssemblyNames();
             foreach (var dll in HybridCLR.Editor.SettingsUtil.HotUpdateAssemblyNamesIncludePreserved)
             {
-                bool isObfuzDll = Obfuz.Settings.ObfuzSettings.Instance.enable && obfuzDllList.Contains(dll);
+                bool isObfuzDll = AppBuildSettings.Instance.EnableObfuz && obfuzDllList.Contains(dll);
                 string dllPath = UtilityBuiltin.AssetsPath.GetCombinePath(isObfuzDll ? obfuzDllSrcDir : hotfixDllSrcDir, dll + ".dll");
                 if (File.Exists(dllPath))
                 {
@@ -116,19 +120,20 @@ namespace UGF.EditorTools
                 Directory.Delete(aotSaveDir, true);
             }
             Directory.CreateDirectory(aotSaveDir);
+
             var aotDllEncryptCode = UTF8Encoding.UTF8.GetBytes(ConstBuiltin.AOT_DLLS_KEY);
             foreach (var dll in HybridCLR.Editor.SettingsUtil.AOTAssemblyNames)
             {
                 string dllPath = UtilityBuiltin.AssetsPath.GetCombinePath(aotDllDir, dll + ".dll");
                 if (!File.Exists(dllPath))
                 {
-                    Debug.LogWarning($"拷贝AOT元数据补充dll:{dllPath} 时发生错误,文件不存在。裁剪后的AOT dll在BuildPlayer时才能生成，因此需要你先构建一次游戏App后再打包。");
+                    Debug.LogWarning($"拷贝AOT元数据补充dll:{dllPath} 时发生错误,文件不存在。首次打包,请使用Full Build以生成AOT dll");
                     failList.Add(dllPath);
                     continue;
                 }
                 string dllBytesPath = UtilityBuiltin.AssetsPath.GetCombinePath(aotSaveDir, Utility.Text.Format("{0}.bytes", dll));
-
                 var dllBytes = File.ReadAllBytes(dllPath);
+                dllBytes = AOTAssemblyMetadataStripper.Strip(dllBytes); //进一步剔除AOT dll中非泛型函数元数据以减少包体大小和提高安全性
                 if (AppSettings.Instance.EncryptAOTDlls != null && AppSettings.Instance.EncryptAOTDlls.Contains(dll))
                 {
                     Utility.Encryption.GetQuickSelfXorBytes(dllBytes, aotDllEncryptCode);
@@ -138,6 +143,7 @@ namespace UGF.EditorTools
 
             return failList.ToArray();
         }
+
         public static void EnableHybridCLR()
         {
 #if UNITY_2021_1_OR_NEWER
