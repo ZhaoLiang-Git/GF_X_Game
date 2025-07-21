@@ -161,6 +161,7 @@ namespace UGF.EditorTools
         }
         private void OnGUI()
         {
+            EditorGUI.BeginDisabledGroup(EditorApplication.isCompiling);
             EditorGUILayout.BeginVertical(GUILayout.Width(position.width), GUILayout.Height(position.height));
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
             {
@@ -434,6 +435,7 @@ namespace UGF.EditorTools
                 GUILayout.Space(2f);
             }
             EditorGUILayout.EndVertical();
+            EditorGUI.EndDisabledGroup();
         }
 
         private void DrawBuildAppButton()
@@ -500,15 +502,11 @@ namespace UGF.EditorTools
             {
                 if (AppSettings.Instance.ResourceMode == ResourceMode.Package)
                 {
-#if !DISABLE_HYBRIDCLR
                     HybridCLRExtensionTool.DisableHybridCLR();
-#endif
                 }
                 else
                 {
-#if DISABLE_HYBRIDCLR
                     HybridCLRExtensionTool.EnableHybridCLR();
-#endif
                 }
             }
         }
